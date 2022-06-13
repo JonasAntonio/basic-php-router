@@ -4,7 +4,12 @@ namespace Basic\Router;
 
 class MiddlewareAfter
 {
-    private array $after;
+    /**
+     * Middlewares list to execute after closure
+     *
+     * @var array<Middleware>
+     */
+    private array $after = [];
 
     public function add(Middleware $middleware)
     {

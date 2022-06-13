@@ -11,7 +11,7 @@ class Router
 {
     private static ?self $instance;
     private Request $request;
-    private Routes $routes;
+    public Routes $routes;
 
     private function __construct()
     {

@@ -4,6 +4,9 @@ namespace Basic\Router;
 
 use Closure;
 
+/**
+ * Route object
+ */
 class Route
 {
     /**
@@ -30,16 +33,8 @@ class Route
     public function __construct(Closure $executable)
     {
         $this->executable = $executable;
-    }
-
-    /**
-     * Get executable
-     *
-     * @return void
-     */
-    public function executable()
-    {
-        return $this->executable;
+        $this->before = new MiddlewareBefore();
+        $this->after = new MiddlewareAfter();
     }
 
     /**

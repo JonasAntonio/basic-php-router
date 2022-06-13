@@ -13,7 +13,7 @@ class Routes
 
     public function add(Route $route, string $method, string $endpoint): Route
     {
-        $this->routes[$method][$endpoint][] = $route;
+        $this->routes[$method][Str::endpointPattern($endpoint)] = $route;
         return $route;
     }
 
@@ -22,8 +22,8 @@ class Routes
         return $this->routes;
     }
 
-    public function get(string $method, string $endpoint): ?Route
+    public function get(Request $request): ?Route
     {
-        return $this->routes[$method][$endpoint] ?? null;
+        return $this->routes[$request->method()][Str::endpointPattern($request->endpoint())] ?? null;
     }
 }
