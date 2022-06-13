@@ -1,0 +1,19 @@
+{
+    "name": "jonas-vicente/basic-php-router",
+    "description": "A basic lib to manage your routers",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Jonas Vicente"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^7.4 || ^8.0 || ^8.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Basic\\Router\\": "src/"
+        }
+    }
+}
