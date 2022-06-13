@@ -26,9 +26,9 @@ class Route
     /**
      * Execute before closure
      *
-     * @var MiddlewareAfter
+     * @var MiddlewareBefore
      */
-    private MiddlewareBefore $before;
+    public MiddlewareBefore $before;
 
     public function __construct(Closure $executable)
     {

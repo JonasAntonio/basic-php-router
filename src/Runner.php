@@ -28,7 +28,11 @@ class Runner
             return;
         }
 
+        $middlewareRunner = new MiddlewareRunner($this->request, $route);
+
+        $middlewareRunner->before();
         echo call_user_func_array($route->executable, $parameters);
+        $middlewareRunner->after();
     }
 
     /**

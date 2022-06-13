@@ -16,7 +16,12 @@ class MiddlewareAfter
         $this->after[] = $middleware;
     }
 
-    public function getAll()
+    /**
+     * All after middlewares
+     *
+     * @return array
+     */
+    public function getAll(): array
     {
         return $this->after;
     }

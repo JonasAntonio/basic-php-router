@@ -16,7 +16,12 @@ class MiddlewareBefore
         $this->before[] = $middleware;
     }
 
-    public function getAll()
+    /**
+     * All before middlewares
+     *
+     * @return array
+     */
+    public function getAll(): array
     {
         return $this->before;
     }
