@@ -28,6 +28,13 @@ class Runner
             return;
         }
 
+        if ($route->pathParameters !== []) {
+            $endpointParts = explode('/', $this->request->endpoint());
+            foreach (array_keys($route->pathParameters) as $key) {
+                $parameters[] = $endpointParts[$key];
+            }
+        }
+
         $middlewareRunner = new MiddlewareRunner($this->request, $route);
 
         $middlewareRunner->before();

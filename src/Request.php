@@ -2,15 +2,38 @@
 
 namespace Basic\Router;
 
+use RuntimeException;
+
 /**
  * Singleton class to get request body and header
  */
 class Request
 {
+    /**
+     * Instance of Request
+     *
+     * @var self|null
+     */
     private static ?self $instance = null;
+
+    /**
+     * Request json as string
+     *
+     * @var string
+     */
+    private string $json;
+
+    /**
+     * Exploded request endpoint array
+     *
+     * @var array
+     */
+    public array $endpointParts = [];
 
     private function __construct()
     {
+        $this->endpointParts = explode('/', $this->endpoint());
+        $this->setJson();
     }
 
     /**
@@ -31,7 +54,7 @@ class Request
      */
     public function endpoint(): string
     {
-        return $_GET['url'];
+        return Str::endpointPattern($_GET['url']);
     }
 
     /**
@@ -49,9 +72,9 @@ class Request
      * 
      * @return array
      */
-    public function array(): array
+    public function toArray(): array
     {
-        return json_decode($this->json(), true) ?? [];
+        return (array) json_decode($this->json, true);
     }
 
     /**
@@ -59,9 +82,9 @@ class Request
      * 
      * @return object
      */
-    public function object(): object
+    public function json(): object
     {
-        return json_decode($this->json()) ?? (object) [];
+        return (object) json_decode($this->json);
     }
 
     /**
@@ -69,7 +92,7 @@ class Request
      *
      * @return array
      */
-    public function lowerCaseHeader(): array
+    public function header(): array
     {
         $header = apache_request_headers();
         foreach ($header as $key => $value) {
@@ -97,20 +120,18 @@ class Request
     }
 
     /**
-     * Request json
+     * Set json
      * 
-     * @return string
+     * @return void
      */
-    private function json(): string
+    private function setJson(): void
     {
         $json = file_get_contents('php://input');
 
         if (empty($json)) {
-            return json_encode(
-                "GET" === $this->method() ? $_GET : $_POST
-            );
+            $json = json_encode("GET" === $this->method() ? $_GET : $_POST);
         }
 
-        return $json;
+        $this->json = $json;
     }
 }

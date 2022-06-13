@@ -39,7 +39,7 @@ class Router
      */
     public function get(string $endpoint, Closure $executable): Route
     {
-        return $this->routes->add(new Route($executable), "GET", $endpoint);
+        return $this->addRoute($endpoint, "GET", $executable);
     }
 
     /**
@@ -51,7 +51,7 @@ class Router
      */
     public function post(string $endpoint, Closure $executable): Route
     {
-        return $this->routes->add(new Route($executable), "POST", $endpoint);
+        return $this->addRoute($endpoint, "POST", $executable);
     }
 
     /**
@@ -63,7 +63,7 @@ class Router
      */
     public function put(string $endpoint, Closure $executable): Route
     {
-        return $this->routes->add(new Route($executable), "PUT", $endpoint);
+        return $this->addRoute($endpoint, "PUT", $executable);
     }
 
     /**
@@ -75,7 +75,7 @@ class Router
      */
     public function delete(string $endpoint, Closure $executable): Route
     {
-        return $this->routes->add(new Route($executable), "DELETE", $endpoint);
+        return $this->addRoute($endpoint, "DELETE", $executable);
     }
 
     /**
@@ -87,6 +87,19 @@ class Router
      */
     public function patch(string $endpoint, Closure $executable): Route
     {
-        return $this->routes->add(new Route($executable), "PATCH", $endpoint);
+        return $this->addRoute($endpoint, "PATCH", $executable);
+    }
+
+    /**
+     * Adds a route to routes array
+     *
+     * @param string $endpoint
+     * @param string $method
+     * @param Closure $executable
+     * @return Route
+     */
+    private function addRoute(string $endpoint, string $method, Closure $executable): Route
+    {
+        return $this->routes->add(new Route($executable), $method, $endpoint, $this->request);
     }
 }

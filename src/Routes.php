@@ -7,7 +7,13 @@ class Routes
     /**
      * Routes in application
      *
-     * @var array<Route>
+     * @var array<Route> [
+     *  string "METHOD" => [
+     *      bool hasPathParameters => [
+     *          string "endpoint" => Basic\Router\Route
+     *      ]
+     *  ]
+     * ]
      */
     private array $routes;
 
@@ -17,12 +23,20 @@ class Routes
      * @param Route $route
      * @param string $method
      * @param string $endpoint
+     * @param Request $request
      * @return Route
      */
-    public function add(Route $route, string $method, string $endpoint): Route
+    public function add(Route $route, string $method, string $endpoint, Request $request): Route
     {
-        $this->routes[$method][Str::endpointPattern($endpoint)] = $route;
-        return $route;
+        $endpoint = Str::endpointPattern($endpoint);
+        $pathParameters = $request->pathParameters($endpoint);
+
+        if ($pathParameters !== []) {
+            $route->pathParameters = $pathParameters;
+            return $this->routes[$method][1][$endpoint] = $route;
+        }
+
+        return $this->routes[$method][0][$endpoint] = $route;
     }
 
     /**
@@ -44,6 +58,32 @@ class Routes
      */
     public function getRoute(Request $request): ?Route
     {
-        return @$this->routes[$request->method()][Str::endpointPattern($request->endpoint())];
+        $route = @$this->routes[$request->method()][0][$request->endpoint()];
+
+        if ($route !== null) {
+            return $route;
+        }
+
+        $requestedEndpointParts = $request->endpointParts;
+        $requestedEndpointPartsCount = count($requestedEndpointParts);
+
+        $routesWithPathParameters = @$this->routes[$request->method()][1] ?? [];
+
+        foreach ($routesWithPathParameters as $endpointName => $route) {
+            $endpointParts = explode('/', $endpointName);
+
+            if ($requestedEndpointPartsCount === count($endpointParts)) {
+                foreach (array_keys($route->pathParameters) as $key) {
+                    unset($requestedEndpointParts[$key]);
+                    unset($endpointParts[$key]);
+                }
+
+                if ($requestedEndpointParts === $endpointParts) {
+                    return $route;
+                }
+            }
+        }
+
+        return null;
     }
 }

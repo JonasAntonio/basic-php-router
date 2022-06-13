@@ -12,6 +12,21 @@ $router->get('/test', function () {
     echo json_encode(["message" => "Do or do not. There is no try."]);
 });
 
+$router->get('/test/{id}', function ($id) {
+    header('Content-Type: application/json', true, 404);
+    echo json_encode(["id" => $id]);
+});
+
+$router->post('/test', function () {
+    header('Content-Type: application/json', true, 404);
+    echo json_encode(["message" => "Do or do not. There is no try."]);
+});
+
+$router->post('/test/{id}', function ($id) {
+    header('Content-Type: application/json', true, 404);
+    echo json_encode(["id" => $id]);
+});
+
 $runner = new Runner();
 
 $runner->run();

@@ -30,11 +30,13 @@ class Route
      */
     public MiddlewareBefore $before;
 
+    public array $pathParameters = [];
+
     public function __construct(Closure $executable)
     {
+        $this->after      = new MiddlewareAfter();
+        $this->before     = new MiddlewareBefore();
         $this->executable = $executable;
-        $this->before = new MiddlewareBefore();
-        $this->after = new MiddlewareAfter();
     }
 
     /**
