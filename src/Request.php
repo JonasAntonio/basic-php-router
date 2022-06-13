@@ -14,7 +14,7 @@ class Request
     }
 
     /**
-     * Singleton instance of self
+     * Singleton instance of itself
      *
      * @return self
      */

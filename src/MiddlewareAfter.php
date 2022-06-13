@@ -11,9 +11,15 @@ class MiddlewareAfter
      */
     private array $after = [];
 
-    public function add(Middleware $middleware)
+    /**
+     * Adds a middleware
+     * 
+     * @return self
+     */
+    public function add(Middleware $middleware): self
     {
         $this->after[] = $middleware;
+        return $this;
     }
 
     /**

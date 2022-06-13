@@ -21,7 +21,7 @@ class Runner
     public function run(): void
     {
         $parameters = [];
-        $route = $this->router->routes->get($this->request);
+        $route = $this->router->routes->getRoute($this->request);
 
         if ($route === null) {
             $this->notFoundResponse();

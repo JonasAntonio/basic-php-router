@@ -19,6 +19,11 @@ class Router
         $this->routes = new Routes();
     }
 
+    /**
+     * Singleton instance of itself
+     *
+     * @return self
+     */
     public static function instance(): self
     {
         self::$instance ??= new Router();
